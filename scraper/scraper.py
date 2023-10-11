@@ -6,12 +6,10 @@ import json
 import os
 import logging
 
-# Constants
 MAX_IDS = 10000000
-SLEEP_MIN = 0.2
-SLEEP_MAX = 1.0
+SLEEP_MIN = 0.1
+SLEEP_MAX = 0.4
 BASE_URL = "https://www.imdb.com/title/tt{}"
-
 USER_AGENTS = [
     # Google Chrome (Desktop)
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -28,7 +26,6 @@ USER_AGENTS = [
 ]
 
 logging.basicConfig(filename='app.log', filemode='w', level=logging.INFO)
-
 session = requests.Session()
 
 def fetch_single_movie_data(url_id):
@@ -60,32 +57,42 @@ def fetch_movie_data(start_idx=0, end_idx=MAX_IDS):
     """Fetch data for a range of movies."""
     raw_content = {}
     missing_movies = {}
+
+    # Check if the files exist and load their content
+    if os.path.exists("raw_content.json"):
+        with open("raw_content.json", 'r', encoding='utf-8') as file:
+            raw_content = json.load(file)
+    if os.path.exists("missing_movies.json"):
+        with open("missing_movies.json", 'r', encoding='utf-8') as file:
+            missing_movies = json.load(file)
+    if raw_content or missing_movies:
+        highest_in_raw = max(map(int, raw_content.keys())) if raw_content else 0
+        highest_in_missing = max(map(int, missing_movies.keys())) if missing_movies else 0
+        start_idx = max(highest_in_raw, highest_in_missing)
+
     try:
         for i in range(start_idx, end_idx):
             url_id = str(i).zfill(len(str(MAX_IDS)) - 1)
             content, error = fetch_single_movie_data(url_id)
-
             if content:
                 raw_content[url_id] = content
             if error:
                 missing_movies[url_id] = error
-            if (i + 1) % 100 == 0:
+            if (i + 1) % 50 == 0:
                 logging.info(f"Processed {i + 1} movies")
+                print(f"Processed {i + 1} movies")
             sleep(random.uniform(SLEEP_MIN, SLEEP_MAX))
-
     except KeyboardInterrupt:
         print("Fetching interrupted by user.")
         print(f"Last movie ID scraped: {i}")
-
     return raw_content, missing_movies
-
 
 def save_to_json(filename, data):
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
-
 def main():
+    print("Starting scraping process...")
     raw_content, missing_movies = fetch_movie_data()
     save_to_json("raw_content.json", raw_content)
     save_to_json("missing_movies.json", missing_movies)
