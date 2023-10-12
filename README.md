@@ -57,7 +57,7 @@ This script is designed to scrape all movie content from IMDB based on movie URL
 2. Execute the script:
 
    ```bash
-   python -m scraper.scraper
+   python -m scraper.main
    ```
 
 ## Settings and Constants:
