@@ -1,7 +1,7 @@
 settings:
   MAX_IDS: 10000000
-  SLEEP_MIN: 0.1
-  SLEEP_MAX: 0.4
+  SLEEP_MIN: 0.05
+  SLEEP_MAX: 0.2
   BASE_URL: "https://www.imdb.com/title/tt{}"
   USER_AGENTS:
     - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
