@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import sys
 
@@ -17,4 +18,5 @@ def load_json_data(filename):
 
     except KeyboardInterrupt:
         print("\nFetching interrupted by user before loading the data.")
+        logging.error(f"Fetching interrupted by user before loading the data. Terminating the script to avoid data loss.")
         sys.exit("Terminating the script to avoid data loss.")

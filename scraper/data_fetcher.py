@@ -59,11 +59,12 @@ def fetch_movie_data(start_idx=0, end_idx=MAX_IDS, session=None):
             if error:
                 missing_movies[url_id] = error
             if (i + 1) % 500 == 0:
-                logging.info(f"Processed {i + 1} movies")
-                print(f"Processed {i + 1} movies")
+                logging.info(f"Processed {i+1} movies")
+                print(f"Processed {i+1} movies")
             sleep(random.uniform(SLEEP_MIN, SLEEP_MAX))
 
     except KeyboardInterrupt:
         print("\nFetching interrupted by user.")
         print(f"Last movie ID scraped: {i-1}")
+        logging.error(f"Fetching interrupted by user. Last movie ID scraped: {i-1}")
     return raw_content, missing_movies
