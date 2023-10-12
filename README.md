@@ -1,6 +1,10 @@
 # IMDB Movie Scraper
 
-This script is designed to scrape movie content from IMDB based on movie URL IDs.
+This script is designed to scrape all movie content from IMDB based on movie URL IDs.
+
+## Key Features:
+
+- **Keyboard Interrupt Handling**: The script supports a keyboard interrupt to pause the scraping. If interrupted, it can continue where it left off during the next run by loading the already scraped pages.
 
 ## Requirements
 
@@ -53,15 +57,15 @@ This script is designed to scrape movie content from IMDB based on movie URL IDs
 2. Execute the script:
 
    ```bash
-   python <script-name>.py
+   python -m scraper.scraper
    ```
 
 ## Settings and Constants:
 
-- `MAX_IDS` - Maximum number of IDs to fetch.
+- `MAX_IDS` - Maximum number of IDs to fetch, set to 9,999,999 which is the maximun length of the current movie IDs.
 - `SLEEP_MIN` and `SLEEP_MAX` - Minimum and maximum time (in seconds) the scraper will wait between requests.
 - `BASE_URL` - IMDB base URL format string.
-- `USER_AGENTS` - List of user-agent strings for rotating headers.
+- `USER_AGENTS` - List of user-agent strings for rotating headers for the request and ensuring not being blocked.
 
 ## Output
 
@@ -77,6 +81,7 @@ The script logs its operations in `app.log`. Check this file for any issues or e
 ## Important Notes
 
 - Web scraping might be against the terms of service of the website. Always ensure you have the right to scrape a website and that you respect the website's `robots.txt` file.
+- According to the [IMDB robots.txt](https://www.imdb.com/robots.txt) file, scraping the title directory, where the general movie information is located, is permitted.
 - This script might be subjected to IP bans if overused. Always use web scraping scripts responsibly and ethically.
 
 ## Disclaimer
